@@ -1,0 +1,33 @@
+8. Space Complexity
+ให้ n = จำนวน Job ที่อยู่ใน Queue
+
+8.1 Algorithm A — FIFO
+ใช้
+Queue<PrintJob> fifoQueue
+Queue ต้องเก็บ Job จำนวน n ตัว
+
+ดังนั้น
+Space Complexity = O(n)
+
+เช่นถ้ามี
+100 Jobs
+Queue ต้องใช้พื้นที่สำหรับเก็บข้อมูลของ 100 Jobs
+
+8.2 Algorithm B — SJF
+ใช้
+PriorityQueue<PrintJob> sjfQueue
+ต้องเก็บ Job จำนวน n ตัวเช่นเดียวกัน
+ดังนั้น
+Space Complexity = O(n)
+
+8.3 พื้นที่เพิ่มเติมตอน DISPLAY SJF
+ในโค้ดเรามี
+List<PrintJob> jobs =
+        new ArrayList<>(sjfQueue);
+        
+ซึ่งสร้าง List ใหม่เพื่อใช้เรียงลำดับก่อนแสดงผล
+จึงใช้พื้นที่เพิ่ม
+O(n)
+
+แต่เมื่อพิจารณาโดยรวมแล้ว Space Complexity ยังคงเป็น
+O(n)

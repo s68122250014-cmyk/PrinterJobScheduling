@@ -1,0 +1,79 @@
+6. Correctness / Invariant
+6.1 Correctness ของ Algorithm A — FIFO
+Invariant:
+Job ที่อยู่ด้านหน้าของ Queue ต้องเป็น Job ที่มีลำดับการ Submit เก่าที่สุดในบรรดา Job ที่ยังไม่ถูกพิมพ์หรือยกเลิก
+
+พูดง่าย ๆ คือ
+เข้าก่อน → อยู่ข้างหน้า
+เข้าทีหลัง → อยู่ข้างหลัง
+
+ตัวอย่าง
+SUBMIT J1
+SUBMIT J2
+SUBMIT J3
+
+จะได้
+[J1, J2, J3]
+
+เมื่อ PRINT
+poll()
+จะนำ J1 ออก
+[J2, J3]
+ดังนั้น FIFO จึงรักษาลำดับการเข้าคิวได้ถูกต้อง
+
+6.2 Correctness ของ Algorithm B — SJF
+Invariant:
+Job ที่อยู่ด้านหน้าของ PriorityQueue ต้องเป็น Job ที่มีจำนวนหน้าน้อยที่สุดใน Queue
+
+ตัวอย่าง
+J1 = 20
+J2 = 2
+J3 = 15
+J4 = 1
+J5 = 10
+
+Priority จะเลือก
+J4 = 1
+ก่อน
+จากนั้น
+J2 = 2
+และ
+J5 = 10
+
+ดังนั้นลำดับที่ถูกต้องคือ
+J4 → J2 → J5 → J3 → J1
+
+6.3 Correctness ของ PRINT
+เมื่อเรียก
+job = fifoQueue.poll();
+หรือ
+job = sjfQueue.poll();
+Job ที่ถูกเลือกจะถูกนำออกจาก Queue และนำไปพิมพ์
+ดังนั้นหลังจาก PRINT
+จำนวน Job ใน Queue ลดลง 1
+ถ้า Queue ว่าง โปรแกรมจะไม่พยายามพิมพ์ Job ที่ไม่มีอยู่ และแสดง
+Queue ว่าง ไม่มีงานให้พิมพ์
+
+6.4 Correctness ของ PEEK
+PEEK ใช้
+queue.peek();
+หน้าที่คือ ดู Job ตัวถัดไปโดยไม่ลบออก
+ดังนั้น
+ก่อน PEEK:
+[J1, J2, J3]
+PEEK:
+J1
+
+หลัง PEEK:
+[J1, J2, J3]
+Queue ไม่เปลี่ยนแปลง
+
+สรุป Correctness
+Operation	สิ่งที่ต้องรักษา
+SUBMIT	เพิ่ม Job เข้า Queue
+PRINT	นำ Job ที่ถูกต้องออก
+CANCEL	ลบเฉพาะ Job ที่ระบุ
+PEEK	ดู Job โดยไม่ลบ
+DISPLAY	แสดงข้อมูลโดยไม่เปลี่ยน Queue
+FIFO	รักษาลำดับเข้าก่อนออกก่อน
+SJF	Job ที่หน้าสั้นที่สุดต้องถูกเลือกก่อน

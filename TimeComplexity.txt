@@ -1,0 +1,93 @@
+7. Time Complexity
+ให้ n = จำนวน Print Job ที่อยู่ใน Queue
+
+7.1 Algorithm A — FIFO
+เราใช้
+ArrayDeque
+Operation	Time Complexity
+SUBMIT / offer()	O(1)
+PRINT / poll()	O(1)
+PEEK / peek()	O(1)
+DISPLAY QUEUE	O(n)
+CANCEL	O(n)
+Search Job	O(n)
+ทำไม CANCEL เป็น O(n)?
+
+เพราะโปรแกรมต้องค้นหา Job ID ก่อน
+for (PrintJob job : queue)
+
+ในกรณีแย่ที่สุด Job ที่ต้องการอาจอยู่ตัวสุดท้าย
+จึงต้องตรวจสอบถึง n ตัว
+
+ดังนั้น
+CANCEL = O(n)
+7.2 Algorithm B — SJF
+
+เราใช้
+Pri
+โดยเรียงตาม numberOfPages
+
+Operation	Time Complexity
+SUBMIT / offer()	O(log n)
+PRINT / poll()	O(log n)
+PEEK / peek()	O(1)
+DISPLAY QUEUE*	O(n log n)
+CANCEL	O(n)
+Search Job	O(n)
+ทำไม SUBMIT เป็น O(log n)?
+
+เมื่อเพิ่ม Job เข้า PriorityQueue
+sjfQueue.offer(job);
+
+PriorityQueue ต้องรักษาโครงสร้าง Heap เพื่อให้ Job ที่มีจำนวนหน้าน้อยที่สุดอยู่ด้านหน้า
+จึงใช้เวลา
+O(log n)
+ทำไม PEEK เป็น O(1)?
+เพราะ Job ที่มี Priority สูงสุดตาม Comparator อยู่ที่ตำแหน่งด้านหน้า Heap อยู่แล้ว
+
+ดังนั้น
+sjfQueue.peek();
+สามารถดูได้ทันที
+O(1)
+
+ทำไม PRINT เป็น O(log n)?
+เมื่อใช้
+sjfQueue.poll();
+โปรแกรมนำ Job ด้านหน้าออก แล้วปรับ Heap ใหม่
+
+จึงใช้
+O(log n)
+หมายเหตุเรื่อง DISPLAY
+
+ในโค้ดของเรา Algorithm B มีการ Copy และ Sort ก่อนแสดงผล เพื่อให้แสดง Queue เป็นลำดับ SJF อย่างชัดเจน
+List<PrintJob> jobs =
+        new ArrayList<>(sjfQueue);
+
+jobs.sort(...);
+ดังนั้นส่วนนี้มี Complexity เป็น
+O(n log n)
+
+7.3 เปรียบเทียบ Complexity
+Operation	FIFO	SJF
+SUBMIT	O(1)	O(log n)
+PRINT	O(1)	O(log n)
+PEEK	O(1)	O(1)
+CANCEL	O(n)	O(n)
+DISPLAY	O(n)	O(n log n)
+สรุป
+
+FIFO เร็วกว่าในด้านการเพิ่มและนำ Job ออก
+FIFO
+SUBMIT = O(1)
+PRINT  = O(1)
+แต่ FIFO ไม่ได้พิจารณาจำนวนหน้าของ Job
+
+ส่วน
+SJF มีค่าใช้จ่ายเพิ่มขึ้นเล็กน้อย
+
+SJF
+SUBMIT = O(log n)
+PRINT  = O(log n)
+
+เพราะต้องรักษาลำดับของ Job ตามจำนวนหน้า
+แต่ข้อดีคือสามารถลด Average Waiting Time ได้ใน Scenario ที่กำหนด

@@ -1,0 +1,58 @@
+5. Queue Trace อย่างน้อย 10 Operations
+Queue Trace คือการแสดงให้เห็นว่า แต่ละคำสั่งทำให้ Queue เปลี่ยนแปลงอย่างไร ตั้งแต่เริ่มต้นจนจบ
+
+ข้อมูลตัวอย่าง
+J1 = 20 pages
+J2 = 2 pages
+J3 = 15 pages
+J4 = 1 page
+J5 = 10 pages
+
+5.1 Queue Trace — Algorithm A: FIFO
+หลักการคือ เข้าก่อน ออกก่อน
+Operation	คำสั่ง	การทำงาน	Queue หลัง Operation
+1	SUBMIT J1	เพิ่ม J1	[J1]
+2	SUBMIT J2	เพิ่ม J2	[J1, J2]
+3	SUBMIT J3	เพิ่ม J3	[J1, J2, J3]
+4	SUBMIT J4	เพิ่ม J4	[J1, J2, J3, J4]
+5	SUBMIT J5	เพิ่ม J5	[J1, J2, J3, J4, J5]
+6	PEEK	ดูงานแรก	[J1, J2, J3, J4, J5]
+7	PRINT	พิมพ์ J1	[J2, J3, J4, J5]
+8	PEEK	ดูงานแรก	[J2, J3, J4, J5]
+9	CANCEL J4	ลบ J4	[J2, J3, J5]
+10	PRINT	พิมพ์ J2	[J3, J5]
+
+ผลลัพธ์
+ลำดับการพิมพ์คือ
+J1 → J2
+และก่อน Cancel จะเห็นว่า Queue เป็น
+J1 → J2 → J3 → J4 → J5
+หลังจาก CANCEL J4
+J1 → J2 → J3 → J5
+
+5.2 Queue Trace — Algorithm B: SJF
+SJF จะเลือก Job ที่มีจำนวนหน้าน้อยที่สุดก่อน
+ข้อมูลที่ Submit:
+J1 = 20
+J2 = 2
+J3 = 15
+J4 = 1
+J5 = 10
+Operation	คำสั่ง	การทำงาน	Queue ตามลำดับความสำคัญ
+1	SUBMIT J1	เพิ่ม J1	[J1(20)]
+2	SUBMIT J2	เพิ่ม J2	[J2(2), J1(20)]
+3	SUBMIT J3	เพิ่ม J3	[J2(2), J3(15), J1(20)]
+4	SUBMIT J4	เพิ่ม J4	[J4(1), J2(2), J3(15), J1(20)]
+5	SUBMIT J5	เพิ่ม J5	[J4(1), J2(2), J5(10), J3(15), J1(20)]
+6	PEEK	ดูงานที่สั้นที่สุด	J4
+7	PRINT	พิมพ์ J4	[J2, J5, J3, J1]
+8	PEEK	ดูงานที่สั้นที่สุด	J2
+9	CANCEL J3	ลบ J3	[J2, J5, J1]
+10	PRINT	พิมพ์ J2	[J5, J1]
+
+ผลลัพธ์
+ลำดับที่ SJF เลือกคือ
+J4 → J2 → J5 → J3 → J1
+
+เพราะเรียงตามจำนวนหน้า
+1 → 2 → 10 → 15 → 20
