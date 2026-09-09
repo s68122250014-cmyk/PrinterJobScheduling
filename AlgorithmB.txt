@@ -1,0 +1,31 @@
+Algorithm B — Shortest Job First
+Algorithm B จะเลือก Job ที่มีจำนวนหน้าน้อยที่สุดก่อน
+
+โจทย์กำหนด
+J1 = 20 pages
+J2 = 2 pages
+J3 = 15 pages
+J4 = 1 page
+J5 = 10 pages
+
+ดังนั้นโปรแกรมใช้
+PriorityQueue<PrintJob> sjfQueue =
+        new PriorityQueue<>(
+            Comparator
+                .comparingInt(PrintJob::getNumberOfPages)
+                .thenComparingInt(PrintJob::getSequence)
+        );
+
+ส่วนสำคัญคือ
+comparingInt(PrintJob::getNumberOfPages)
+หมายถึงเรียงตามจำนวนหน้า
+
+ดังนั้นจะได้
+J4 = 1
+J2 = 2
+J5 = 10
+J3 = 15
+J1 = 20
+
+ลำดับการพิมพ์คือ
+J4 → J2 → J5 → J3 → J1

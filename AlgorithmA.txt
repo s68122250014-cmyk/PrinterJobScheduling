@@ -1,0 +1,24 @@
+Algorithm A — FIFO Queue
+หลักการของ FIFO (First In First Out) 
+คือ ใครเข้าคิวก่อน ได้พิมพ์ก่อน
+
+ใน Java ใช้
+Queue<PrintJob> fifoQueue = new ArrayDeque<>();
+
+ตอน SUBMIT
+fifoQueue.offer(job);
+หมายถึงเพิ่ม Job ต่อท้ายคิว
+
+ตอน PRINT
+job = fifoQueue.poll();
+หมายถึงเอา Job ตัวแรกออกจากคิว
+
+ดังนั้นถ้าเพิ่ม
+J1
+J2
+J3
+J4
+J5
+
+ลำดับการพิมพ์คือ
+J1 → J2 → J3 → J4 → J5
