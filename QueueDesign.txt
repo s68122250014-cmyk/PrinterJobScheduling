@@ -1,0 +1,127 @@
+2. Queue Design
+โปรแกรมออกแบบ Queue สำหรับ Algorithm 2 แบบ เนื่องจากแต่ละ Algorithm มีวิธีจัดลำดับ Job แตกต่างกัน
+
+2.1 Algorithm A — FIFO Queue
+สำหรับ FIFO ใช้
+Queue<PrintJob> fifoQueue = new ArrayDeque<>();
+
+หลักการคือ
+First In First Out
+หมายถึง เข้าก่อน → ออกก่อน
+
+ตัวอย่างข้อมูล
+Submit
+J1 → J2 → J3 → J4 → J5
+
+ลำดับการพิมพ์
+J1 → J2 → J3 → J4 → J5
+
+การเพิ่ม Job
+ใช้
+fifoQueue.offer(job);
+offer() ทำหน้าที่เพิ่ม Job เข้าไปด้านท้าย Queue
+
+การนำ Job ออก
+ใช้
+fifoQueue.poll();
+poll() จะนำ Job ตัวแรกออกจาก Queue
+
+การดู Job ถัดไป
+ใช้
+fifoQueue.peek();
+peek() จะดู Job ตัวแรกโดย ไม่ลบออกจาก Queue
+
+2.2 Algorithm B — Shortest Job First
+สำหรับ SJF ใช้
+PriorityQueue<PrintJob> sjfQueue
+
+โดยกำหนดให้เรียงตาม
+numberOfPages
+จากน้อยไปมาก
+
+ตัวอย่าง
+ข้อมูลที่ส่งเข้ามา
+J1 = 20 pages
+J2 = 2 pages
+J3 = 15 pages
+J4 = 1 page
+J5 = 10 pages
+
+Queue จะเลือก Job ตามจำนวนหน้า
+J4 = 1
+J2 = 2
+J5 = 10
+J3 = 15
+J1 = 20
+
+ดังนั้นลำดับการพิมพ์คือ
+J4 → J2 → J5 → J3 → J1
+2.3 โครงสร้าง Queue ของระบบ
+
+สามารถแสดงการออกแบบโดยรวมได้ดังนี้
+
+                 Print Jobs
+                     │
+        ┌────────────┴────────────┐
+        │                         │
+        ▼                         ▼
+ Algorithm A                 Algorithm B
+    FIFO                         SJF
+        │                         │
+        ▼                         ▼
+ ArrayDeque                 PriorityQueue
+        │                         │
+        ▼                         ▼
+เข้าก่อนออกก่อน             หน้าน้อยออกก่อน
+        │                         │
+        └────────────┬────────────┘
+                     ▼
+                  Printer
+                     │
+                     ▼
+                 PRINT JOB
+2.4 Queue Operations
+ระบบมี Operation หลัก 5 อย่างตามโจทย์
+Operation	การทำงาน
+SUBMIT	เพิ่ม Print Job เข้า Queue
+PRINT	นำ Job ตามลำดับออกจาก Queue เพื่อพิมพ์
+CANCEL	ค้นหาและลบ Job ที่ต้องการออก
+PEEK	ดู Job ถัดไปโดยไม่ลบ
+DISPLAY QUEUE	แสดง Job ทั้งหมดที่กำลังรอ
+
+2.5 ตัวอย่าง Queue Trace
+FIFO
+เริ่มต้น
+Queue = [ ]
+SUBMIT J1
+[J1]
+SUBMIT J2
+[J1, J2]
+SUBMIT J3
+[J1, J2, J3]
+SUBMIT J4
+[J1, J2, J3, J4]
+SUBMIT J5
+[J1, J2, J3, J4, J5]
+PRINT
+นำ J1 ออก
+[J2, J3, J4, J5]
+จะเห็นว่า FIFO รักษาลำดับการเข้ามาของ Job
+
+SJF
+เริ่มต้นส่ง Job ในลำดับ
+J1 = 20
+J2 = 2
+J3 = 15
+J4 = 1
+J5 = 10
+
+แต่ Priority Queue จะเลือกตามจำนวนหน้า
+[J4, J2, J5, J3, J1]
+
+ดังนั้นเมื่อ PRINT จะได้
+PRINT → J4
+PRINT → J2
+PRINT → J5
+PRINT → J3
+PRINT → J1
